@@ -163,6 +163,10 @@ i}n
 
 \end_layout
 
+\begin_layout Date
+February 24, 2014
+\end_layout
+
 \begin_layout Institute
 \begin_inset Float figure
 wide false
@@ -401,6 +405,167 @@ Stadler, M., Murr, R., Burger, L., et al.
 
 \end_layout
 
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Utility and futility of average profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Does this mean all of the windows (viewpoints) have a similar enrichment
+ profile?
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<utility,eval=TRUE,echo=FALSE,warning=FALSE,message=FALSE,fig.width=4,fig.height=
+4,out.width='.5
+\backslash
+
+\backslash
+linewidth'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(genomation)
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(112)
+\end_layout
+
+\begin_layout Plain Layout
+
+x=sapply(c(rep(3,7),5:7,c(7,8,8,9,9,9,9,8,8,7),7:5,rep(3,7)),function(x)
+ rnorm(400,mean=x,sd=3) ) 
+\end_layout
+
+\begin_layout Plain Layout
+
+y=sapply( rep(3,30),function(x) rnorm(800,mean=x,sd=3) ) 
+\end_layout
+
+\begin_layout Plain Layout
+
+sm=rbind(x,y) 
+\end_layout
+
+\begin_layout Plain Layout
+
+sm[sm<0]=0
+\end_layout
+
+\begin_layout Plain Layout
+
+sm=new("ScoreMatrix",sm) 
+\end_layout
+
+\begin_layout Plain Layout
+
+plotMeta(sm,line.col="red",main="average profile around anchor",xcoords=c(-100,10
+0)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Utility and futility of average profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Only 1/3 of windows have such enrichment.
+ Be careful when you are interpreting the average profiles.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<utility2,eval=TRUE,echo=FALSE,warning=FALSE,message=FALSE,fig.width=3,fig.height
+=4,out.width='.40
+\backslash
+
+\backslash
+linewidth'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+heatMatrix(sm,col=c("gray","brown","red" ),xcoords=c(-100,100) ) 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout BeginFrame
 Genomic interval summaries are widely used: Examples from literature
 \end_layout
@@ -439,6 +604,10 @@ Lister, R., et al.
 
 \end_layout
 
+\begin_layout EndFrame
+
+\end_layout
+
 \begin_layout BeginFrame
 Genomic interval summaries are widely used: Examples from literature
 \end_layout
@@ -447,7 +616,7 @@ Genomic interval summaries are widely used: Examples from literature
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -575,7 +744,7 @@ Using genomation
 
 \begin_layout Standard
 \begin_inset Flex FragileFrame
-status open
+status collapsed
 
 \begin_layout FrameTitle
 \begin_inset Flex FragileTitle
@@ -851,7 +1020,7 @@ status open
 status open
 
 \begin_layout FrameTitle
-Visualizing ScoreMatrix: summar of genomic invervals over pre-defined regions
+Visualizing ScoreMatrix: summary of genomic invervals over pre-defined regions
 \end_layout
 
 \end_inset
@@ -910,7 +1079,7 @@ heatMatrix(sm, xcoords = c(-1000, 1000))
 
 \begin_layout Plain Layout
 
-plotMeta(sm, xcoords = c(-1000, 1000)) 
+plotMeta(sm, xcoords = c(-1000, 1000),line.col="blue") 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1079,7 +1248,12 @@ sm=ScoreMatrix(target="wgEncodeUwDnaseA549RawRep1.bw",
 
 \begin_layout Plain Layout
 
-plotMeta(sm,xcoords=c(-500,500),main="DHS profile around TSS")
+plotMeta(sm,xcoords=c(-500,500),main="DHS profile around TSS",
+\end_layout
+
+\begin_layout Plain Layout
+
+         line.col="blue")
 \end_layout
 
 \begin_layout Plain Layout
@@ -1168,12 +1342,173 @@ names(sml)=c("CTCF","P300","Suz12","Rad21","Znf143")
 
 \begin_layout Plain Layout
 
-multiHeatMatrix(sml, xcoords = c(-500, 500),cex.axis=0.6,
+multiHeatMatrix(sml, xcoords = c(-500, 500),cex.axis=0.35,common.scale = T,
 \end_layout
 
 \begin_layout Plain Layout
 
                 col = c("lightgray", "blue"),winsorize=c(0,95))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Multiple profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Multiple heatmap profiles can be plotted using 
+\series bold
+multiHeatMatrix()
+\series default
+ which takes in a 
+\series bold
+ScoreMatrixList
+\series default
+ object.
+ Here we used CTCF , P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData
+ package.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<multProf2,eval=TRUE,size='tiny',fig.width=4,fig.height=4,out.width='.40
+\backslash
+
+\backslash
+linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+multiHeatMatrix(sml, xcoords = c(-500, 500),kmeans=TRUE,k=3,common.scale
+ = T,
+\end_layout
+
+\begin_layout Plain Layout
+
+                cex.axis=0.4,col = c("lightgray", "blue"),winsorize=c(0,95))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Multiple profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Multiple heatmap profiles can be plotted using 
+\series bold
+multiHeatMatrix()
+\series default
+ which takes in a 
+\series bold
+ScoreMatrixList
+\series default
+ object.
+ Here we used CTCF , P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData
+ package.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<multProf3,eval=TRUE,fig.width=8,fig.height=5,out.width='.7
+\backslash
+
+\backslash
+linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# take log2 of all matrices
+\end_layout
+
+\begin_layout Plain Layout
+
+sml2=scaleScoreMatrixList(sml,scalefun=function(x) log2(x+1))
+\end_layout
+
+\begin_layout Plain Layout
+
+heatMeta(sml2,legend.name="average profiles",xcoords=c(-500, 500),
+\end_layout
+
+\begin_layout Plain Layout
+
+         xlab="bp around peaks")
 \end_layout
 
 \begin_layout Plain Layout
@@ -1263,7 +1598,7 @@ http://github.com/al2na/genomation_presentation
 \begin_layout Itemize
 
 \series bold
-Questions and bugreports
+Questions and bug reports
 \end_layout
 
 \begin_deeper
@@ -1332,6 +1667,56 @@ i}n
 \end_layout
 
 \begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Session Info
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<session,eval=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+sessionInfo()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 
 \end_layout
 

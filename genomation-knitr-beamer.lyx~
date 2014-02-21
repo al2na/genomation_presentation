@@ -1,0 +1,1718 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+\usetheme{PaloAlto}
+\end_preamble
+\use_default_options true
+\begin_modules
+knitr
+beamer-fragile
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding default
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 10
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<setup, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(knitr)
+\end_layout
+
+\begin_layout Plain Layout
+
+opts_chunk$set(fig.path='figure/beamer-',fig.align='center',fig.show='hold',size='f
+ootnotesize')
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+genomation package
+\end_layout
+
+\end_inset
+
+genomation
+\end_layout
+
+\begin_layout Subtitle
+a toolkit to summarize, annotate and visualize genomic intervals
+\end_layout
+
+\begin_layout Author
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+Altuna Akal{
+\backslash
+i}n
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+* presented by.
+ Package developed by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+Altuna Akal{
+\backslash
+i}n
+\end_layout
+
+\end_inset
+
+ and Vedran Franke
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+February 24, 2014
+\end_layout
+
+\begin_layout Institute
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename FMI_logo_pos_def.jpg
+	display false
+	height 1.5cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Quick introduction
+\end_layout
+
+\begin_layout Itemize
+The 
+\series bold
+genomation 
+\series default
+is an 
+\series bold
+R
+\emph on
+ 
+\series default
+\emph default
+package that expedites genomic interval summary and annotation.
+ It has the following features
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+Annotation of genomic intervals: e.g.
+ see what % of your intervals overlap with exon/intron/promoters
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+Summary of genomic scores or read coverages over pre-defined regions
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+e.g.
+ extract the conservation profile over ChIP-seq binding sites (equi-width
+ regions) or CpG islands (nonequi-width regions)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<3->
+\end_layout
+
+\end_inset
+
+Visualize genomic interval summaries as meta-region plots or heatmaps.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<4->
+\end_layout
+
+\end_inset
+
+Work with multiple file formats
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+e.g.
+ BAM, BED, bigWig, GFF and generic tabular text files containing chromosome
+ location information.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<5->
+\end_layout
+
+\end_inset
+
+do all these in 
+\series bold
+R
+\series default
+ :)
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Usage and ubiquity of genomic interval summaries 
+\end_layout
+
+\begin_layout BeginFrame
+Genomic interval summaries are widely used
+\end_layout
+
+\begin_layout Itemize
+Summaries of genomic intervals are one of the useful ways to communicate
+ high-dimensional data
+\end_layout
+
+\begin_layout Itemize
+Traditionally, regions of interest are picked and distribution of genomic
+ intervals are summarized on those regions
+\end_layout
+
+\begin_layout BeginFrame
+Genomic interval summaries are widely used: Examples from literature
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename nsmb.2599-F4.jpg
+	display false
+	height 4cm
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Erkek, S., et al.
+ (2013).
+ Molecular determinants of nucleosome retention at CpG-rich sequences in
+ mouse spermatozoa.
+ Nature Structural & Molecular Biology
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Genomic interval summaries are widely used: Examples from literature
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename nature10716-f2.2.jpg
+	display false
+	height 5cm
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Stadler, M., Murr, R., Burger, L., et al.
+ (2011).
+ DNA-binding factors shape the mouse methylome at distal regulatory regions.
+ Nature 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Utility and futility of average profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Does this mean all of the windows (viewpoints) have a similar enrichment
+ profile?
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<utility,eval=TRUE,echo=FALSE,warning=FALSE,message=FALSE,fig.width=4,fig.height=
+4,out.width='.5
+\backslash
+
+\backslash
+linewidth'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(genomation)
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(112)
+\end_layout
+
+\begin_layout Plain Layout
+
+x=sapply(c(rep(3,7),5:7,c(7,8,8,9,9,9,9,8,8,7),7:5,rep(3,7)),function(x)
+ rnorm(400,mean=x,sd=3) ) 
+\end_layout
+
+\begin_layout Plain Layout
+
+y=sapply( rep(3,30),function(x) rnorm(800,mean=x,sd=3) ) 
+\end_layout
+
+\begin_layout Plain Layout
+
+sm=rbind(x,y) 
+\end_layout
+
+\begin_layout Plain Layout
+
+sm[sm<0]=0
+\end_layout
+
+\begin_layout Plain Layout
+
+sm=new("ScoreMatrix",sm) 
+\end_layout
+
+\begin_layout Plain Layout
+
+plotMeta(sm,line.col="red",main="average profile around anchor",xcoords=c(-100,10
+0)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Utility and futility of average profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Only 1/3 of windows have such enrichment.
+ Be careful when you are interpreting the average profiles.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<utility2,eval=TRUE,echo=FALSE,warning=FALSE,message=FALSE,fig.width=3,fig.height
+=4,out.width='.40
+\backslash
+
+\backslash
+linewidth'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+heatMatrix(sm,col=c("gray","brown","red" ),xcoords=c(-100,100) ) 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Genomic interval summaries are widely used: Examples from literature
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename nature08514-f6.2.jpg
+	display false
+	height 6cm
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Lister, R., et al.
+ (2009).
+ Human DNA methylomes at base resolution show widespread epigenomic differences.
+ Nature 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Genomic interval summaries are widely used: Examples from literature
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename F4.large.jpg
+	display false
+	height 6cm
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Feng, S.
+ et al.
+ (2010).
+ Conservation and divergence of methylation patterning in plants and animals.
+ PNAS
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Issues to keep in mind when developing summary methods
+\end_layout
+
+\begin_layout Itemize
+Genomic data comes in many formats, we need a method that is able to 
+\series bold
+work with multiple flat file formats
+\end_layout
+
+\begin_layout Itemize
+We need a method that is not specialized on one type of data set such as
+ read counts, it should also work on 
+\series bold
+other scoring schemes
+\series default
+(e.g.
+ conservation scores) easily.
+\end_layout
+
+\begin_layout Itemize
+Regions of interest are not always equi-width, you should be able to 
+\series bold
+normalize for length differences by binning
+\series default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Multiple visualization options
+\series default
+ and fast heatmap generation should be available
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Clustering of regions
+\series default
+ based on multiple summaries (e.g.
+ binding for different TFs on the same set of regions) on the heatmap
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Ease of use
+\series default
+, it should not take hours of coding to generate and visualize summaries.
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginFrame
+Overview of genomation features
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename figure1.pdf
+	display false
+	height 5cm
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Using genomation
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status collapsed
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+installation of the package and the example data
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+We can install the package and the data using 
+\emph on
+install_github() 
+\emph default
+function from the 
+\emph on
+devtools
+\emph default
+ package.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<installation,eval=FALSE,tidy=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+#install dependencies
+\end_layout
+
+\begin_layout Plain Layout
+
+install.packages( c("data.table","plyr","reshape2","ggplot2",
+\end_layout
+
+\begin_layout Plain Layout
+
+                    "gridBase","devtools")) 
+\end_layout
+
+\begin_layout Plain Layout
+
+source("http://bioconductor.org/biocLite.R") 
+\end_layout
+
+\begin_layout Plain Layout
+
+biocLite(c("GenomicRanges","rtracklayer","impute","Rsamtools"))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# install the packages 
+\end_layout
+
+\begin_layout Plain Layout
+
+library(devtools) 
+\end_layout
+
+\begin_layout Plain Layout
+
+install_github("genomation", username = "al2na")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# install the data package
+\end_layout
+
+\begin_layout Plain Layout
+
+# needed for examples
+\end_layout
+
+\begin_layout Plain Layout
+
+install_github("genomationData", username = "al2na")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Data import
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Various file formats can be used in genomation.
+ You can read in annotation or your genomic intervals of interest.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<data_import,eval=TRUE,warning=FALSE,message=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+library(genomation)
+\end_layout
+
+\begin_layout Plain Layout
+
+tab.file1 <- system.file("extdata/tab1.bed", package = "genomation") 
+\end_layout
+
+\begin_layout Plain Layout
+
+readGeneric(tab.file1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Extraction of data over pre-defined genomic regions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+ScoreMatrix()
+\series default
+ and 
+\series bold
+ScoreMatrixBin()
+\series default
+ are functions used to extract data over predefined windows.
+ 
+\end_layout
+
+\begin_layout Itemize
+ScoreMatrix is used when all of the windows have the same width (e.g.
+ region around TSS)
+\end_layout
+
+\begin_layout Itemize
+ScoreMatrixBin is designed for use with windows of unequal width (e.g.
+ enrichment of methylation over exons).
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<extract,eval=TRUE,tidy=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+data(cage) 
+\end_layout
+
+\begin_layout Plain Layout
+
+data(promoters) 
+\end_layout
+
+\begin_layout Plain Layout
+
+sm <- ScoreMatrix(target = cage, windows = promoters) 
+\end_layout
+
+\begin_layout Plain Layout
+
+sm
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Visualizing ScoreMatrix: summary of genomic invervals over pre-defined regions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+plotMeta()
+\series default
+,
+\series bold
+heatMeta()
+\series default
+, 
+\series bold
+heatMatrix() 
+\series default
+and
+\series bold
+ multiHeatMatrix()
+\series default
+ are the visualization functions.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<visualizeA,eval=TRUE,tidy=FALSE,out.width='.45
+\backslash
+
+\backslash
+linewidth'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+oldmar <- par()$mar 
+\end_layout
+
+\begin_layout Plain Layout
+
+par(oma = c(0, 0, 0, 0)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+heatMatrix(sm, xcoords = c(-1000, 1000)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+plotMeta(sm, xcoords = c(-1000, 1000),line.col="blue") 
+\end_layout
+
+\begin_layout Plain Layout
+
+par(oma = oldmar)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Working with BAM files
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+BAM files can also be used in ScoreMatrix() and ScoreMatrixBin() functions
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<bam_example,eval=FALSE,tidy=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+bam.file = system.file('tests/test.bam', package='genomation')  
+\end_layout
+
+\begin_layout Plain Layout
+
+windows = GRanges(rep(c(1,2),each=2), 
+\end_layout
+
+\begin_layout Plain Layout
+
+          IRanges(rep(c(1,2), times=2), width=5))  
+\end_layout
+
+\begin_layout Plain Layout
+
+scores3 = ScoreMatrix(target=bam.file,windows=windows, type='bam')
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Working with bigWig files
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+ScoreMatrix()
+\series default
+ and 
+\series bold
+ScoreMatrixBin()
+\series default
+ are functions can handle bigWig files.
+ Here we use ENCODE DHS scores, downloaded from 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://goo.gl/fEVu0g
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<bigWig,eval=TRUE,fig.width=4,fig.height=4,out.width='.45
+\backslash
+
+\backslash
+linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+my.bed12.file=system.file("extdata/chr21.refseq.hg19.bed", 
+\end_layout
+
+\begin_layout Plain Layout
+
+                            package = "genomation") 
+\end_layout
+
+\begin_layout Plain Layout
+
+feats=readTranscriptFeatures(my.bed12.file,up.flank=500,down.flank=500)
+\end_layout
+
+\begin_layout Plain Layout
+
+sm=ScoreMatrix(target="wgEncodeUwDnaseA549RawRep1.bw",
+\end_layout
+
+\begin_layout Plain Layout
+
+     windows=feats$promoters,type='bigWig',strand.aware=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+plotMeta(sm,xcoords=c(-500,500),main="DHS profile around TSS",
+\end_layout
+
+\begin_layout Plain Layout
+
+         line.col="blue")
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Multiple profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Multiple heatmap profiles can be plotted using 
+\series bold
+multiHeatMatrix()
+\series default
+ which takes in a 
+\series bold
+ScoreMatrixList
+\series default
+ object.
+ Here we used CTCF , P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData
+ package.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<multProf,eval=TRUE,size='tiny',fig.width=4,fig.height=4,out.width='.40
+\backslash
+
+\backslash
+linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+ctcf.peaks=readRDS("ctcf.peaks.rds")
+\end_layout
+
+\begin_layout Plain Layout
+
+dataPath = system.file("extdata", package = "genomationData") 
+\end_layout
+
+\begin_layout Plain Layout
+
+bam.files = list.files(dataPath, full= T,pattern = "bam$")[c(1:4,6)] 
+\end_layout
+
+\begin_layout Plain Layout
+
+sml = ScoreMatrixList(bam.files, ctcf.peaks, bin.num = 50,type = "bam")
+\end_layout
+
+\begin_layout Plain Layout
+
+names(sml)=c("CTCF","P300","Suz12","Rad21","Znf143")
+\end_layout
+
+\begin_layout Plain Layout
+
+multiHeatMatrix(sml, xcoords = c(-500, 500),cex.axis=0.35,common.scale = T,
+\end_layout
+
+\begin_layout Plain Layout
+
+                col = c("lightgray", "blue"),winsorize=c(0,95))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Multiple profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Multiple heatmap profiles can be plotted using 
+\series bold
+multiHeatMatrix()
+\series default
+ which takes in a 
+\series bold
+ScoreMatrixList
+\series default
+ object.
+ Here we used CTCF , P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData
+ package.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<multProf2,eval=TRUE,size='tiny',fig.width=4,fig.height=4,out.width='.40
+\backslash
+
+\backslash
+linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+multiHeatMatrix(sml, xcoords = c(-500, 500),kmeans=TRUE,k=3,common.scale
+ = T,
+\end_layout
+
+\begin_layout Plain Layout
+
+                cex.axis=0.4,col = c("lightgray", "blue"),winsorize=c(0,95))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status collapsed
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Multiple profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Multiple heatmap profiles can be plotted using 
+\series bold
+multiHeatMatrix()
+\series default
+ which takes in a 
+\series bold
+ScoreMatrixList
+\series default
+ object.
+ Here we used CTCF , P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData
+ package.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<multProf3,eval=TRUE,fig.width=8,fig.height=5,out.width='.7
+\backslash
+
+\backslash
+linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+heatMeta(sml,legend.name="average profiles",xcoords=c(-500, 500),
+\end_layout
+
+\begin_layout Plain Layout
+
+         xlab="bp around peaks")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+More information
+\end_layout
+
+\begin_layout BeginFrame
+Future work...
+\end_layout
+
+\begin_layout Itemize
+Explore overlap statistics between two genomic data sets: Does TF1 binding
+ site locations overlap with TF2 sites more than expected?
+\end_layout
+
+\begin_layout Itemize
+This is previously explored with 
+\begin_inset CommandInset href
+LatexCommand href
+name "GenometriCorr"
+target "http://genometricorr.sourceforge.net/"
+
+\end_inset
+
+ package.
+ These functionality can be included in the form of a dependency.
+\end_layout
+
+\begin_layout Itemize
+Performance improvement on certain functions, faster is always better...
+\end_layout
+
+\begin_layout BeginFrame
+Further information
+\end_layout
+
+\begin_layout Itemize
+The genomation package is available at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http:/al2na.github.io/genomation
+\end_layout
+
+\end_inset
+
+.
+ You can find the link to the vignette on the webpage as well.
+\end_layout
+
+\begin_layout Itemize
+Code that generated this presentation is available at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://github.com/al2na/genomation_presentation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Questions and bug reports
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+You can view/open issues in github 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/al2na/genomation/issues?state=open
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+You can ask questions by sending an e-mail to 
+\series bold
+\color blue
+genomation@googlegroups.com
+\series default
+\color inherit
+ or using the web interface to 
+\shape slanted
+
+\begin_inset Flex Structure
+status collapsed
+
+\begin_layout Plain Layout
+
+\shape slanted
+\begin_inset CommandInset href
+LatexCommand href
+name "google groups"
+target "https://groups.google.com/forum/#!forum/genomation"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Developed by 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+Altuna Akal{
+\backslash
+i}n
+\end_layout
+
+\end_inset
+
+ and Vedran Franke
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Session Info
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<session,eval=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+sessionInfo()
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
