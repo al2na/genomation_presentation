@@ -1248,12 +1248,7 @@ sm=ScoreMatrix(target="wgEncodeUwDnaseA549RawRep1.bw",
 
 \begin_layout Plain Layout
 
-plotMeta(sm,xcoords=c(-500,500),main="DHS profile around TSS",
-\end_layout
-
-\begin_layout Plain Layout
-
-         line.col="blue")
+plotMeta(sm,xcoords=c(-500,500),main="DHS around TSS",line.col="blue")
 \end_layout
 
 \begin_layout Plain Layout
@@ -1300,6 +1295,7 @@ ScoreMatrixList
  object.
  Here we used CTCF , P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData
  package.
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1387,17 +1383,20 @@ Multiple profiles
 \end_layout
 
 \begin_layout Plain Layout
-Multiple heatmap profiles can be plotted using 
+
 \series bold
 multiHeatMatrix()
 \series default
- which takes in a 
-\series bold
-ScoreMatrixList
-\series default
- object.
- Here we used CTCF , P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData
- package.
+ can also apply K-means clustering.
+ Extreme values are trimmed using with 
+\begin_inset Quotes eld
+\end_inset
+
+winsorize
+\begin_inset Quotes erd
+\end_inset
+
+ argument
 \end_layout
 
 \begin_layout Plain Layout
@@ -1465,17 +1464,13 @@ Multiple profiles
 \end_layout
 
 \begin_layout Plain Layout
-Multiple heatmap profiles can be plotted using 
+Multiple average profiles can be visualized with 
 \series bold
-multiHeatMatrix()
+heatMeta().
+ 
 \series default
- which takes in a 
-\series bold
-ScoreMatrixList
-\series default
- object.
- Here we used CTCF , P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData
- package.
+Here, we also apply a scaling function to all the matrices.
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -1493,16 +1488,93 @@ linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
 
 \begin_layout Plain Layout
 
+# take log2 of all matrices
 \end_layout
 
 \begin_layout Plain Layout
 
-heatMeta(sml,legend.name="average profiles",xcoords=c(-500, 500),
+sml2=scaleScoreMatrixList(sml,scalefun=function(x) log2(x+1))
+\end_layout
+
+\begin_layout Plain Layout
+
+heatMeta(sml2,legend.name="average profiles",xcoords=c(-500, 500),
 \end_layout
 
 \begin_layout Plain Layout
 
          xlab="bp around peaks")
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex FragileFrame
+status open
+
+\begin_layout FrameTitle
+\begin_inset Flex FragileTitle
+status open
+
+\begin_layout FrameTitle
+Multiple profiles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Multiple average profiles can be visualized with 
+\series bold
+plotMeta()
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<multProf4,eval=TRUE,fig.width=8,fig.height=5,out.width='.7
+\backslash
+
+\backslash
+linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+plotMeta(sml2,profile.names=names(sml2),
+\end_layout
+
+\begin_layout Plain Layout
+
+         xcoords=c(-500, 500),
+\end_layout
+
+\begin_layout Plain Layout
+
+         main="mult.
+ profiles")
 \end_layout
 
 \begin_layout Plain Layout
