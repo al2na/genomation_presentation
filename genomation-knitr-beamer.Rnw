@@ -1,0 +1,411 @@
+%% LyX 2.0.6 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[10pt]{beamer}
+\usepackage[T1]{fontenc}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\usepackage{url}
+\usepackage{graphicx}
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false}
+  }
+\else
+  \hypersetup{unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false}
+\fi
+\usepackage{breakurl}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% A simple dot to overcome graphicx limitations
+\newcommand{\lyxdot}{.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+ % this default might be overridden by plain title style
+ \newcommand\makebeamertitle{\frame{\maketitle}}%
+ \AtBeginDocument{
+   \let\origtableofcontents=\tableofcontents
+   \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+   \def\gobbletableofcontents#1{\origtableofcontents}
+ }
+ \def\lyxframeend{} % In case there is a superfluous frame end
+ \long\def\lyxframe#1{\@lyxframe#1\@lyxframestop}%
+ \def\@lyxframe{\@ifnextchar<{\@@lyxframe}{\@@lyxframe<*>}}%
+ \def\@@lyxframe<#1>{\@ifnextchar[{\@@@lyxframe<#1>}{\@@@lyxframe<#1>[]}}
+ \def\@@@lyxframe<#1>[{\@ifnextchar<{\@@@@@lyxframe<#1>[}{\@@@@lyxframe<#1>[<*>][}}
+ \def\@@@@@lyxframe<#1>[#2]{\@ifnextchar[{\@@@@lyxframe<#1>[#2]}{\@@@@lyxframe<#1>[#2][]}}
+ \long\def\@@@@lyxframe<#1>[#2][#3]#4\@lyxframestop#5\lyxframeend{%
+   \frame<#1>[#2][#3]{\frametitle{#4}#5}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usetheme{PaloAlto}
+
+\makeatother
+
+\begin{document}
+<<setup, include=FALSE>>=
+library(knitr)
+opts_chunk$set(fig.path='figure/beamer-',fig.align='center',fig.show='hold',size='footnotesize')
+@
+
+
+\title[genomation package]{genomation}
+
+
+\subtitle{a toolkit to summarize, annotate and visualize genomic intervals}
+
+
+\author{Altuna Akal{\i}n%
+\thanks{{*} presented by. Package developed by Altuna Akal{\i}n and Vedran
+Franke%
+}}
+
+
+\date{February 24, 2014}
+
+
+\institute{
+\begin{figure}
+\includegraphics[height=1.5cm]{FMI_logo_pos_def}
+
+\end{figure}
+}
+
+\makebeamertitle
+
+\lyxframeend{}
+
+
+\lyxframeend{}\lyxframe{Quick introduction}
+\begin{itemize}
+\item The \textbf{genomation }is an \textbf{R}\textbf{\emph{ }}package that
+expedites genomic interval summary and annotation. It has the following
+features
+
+\begin{enumerate}
+\item <1->Annotation of genomic intervals: e.g. see what \% of your intervals
+overlap with exon/intron/promoters
+\item <2->Summary of genomic scores or read coverages over pre-defined
+regions
+
+\begin{itemize}
+\item e.g. extract the conservation profile over ChIP-seq binding sites
+(equi-width regions) or CpG islands (nonequi-width regions)
+\end{itemize}
+\item <3->Visualize genomic interval summaries as meta-region plots or
+heatmaps.
+\item <4->Work with multiple file formats
+
+\begin{itemize}
+\item e.g. BAM, BED, bigWig, GFF and generic tabular text files containing
+chromosome location information.
+\end{itemize}
+\item <5->do all these in \textbf{R} :)
+\end{enumerate}
+\end{itemize}
+
+\lyxframeend{}\section{Usage and ubiquity of genomic interval summaries }
+
+
+\lyxframeend{}\lyxframe{Genomic interval summaries are widely used}
+\begin{itemize}
+\item Summaries of genomic intervals are one of the useful ways to communicate
+high-dimensional data
+\item Traditionally, regions of interest are picked and distribution of
+genomic intervals are summarized on those regions
+\end{itemize}
+
+\lyxframeend{}\lyxframe{Genomic interval summaries are widely used: Examples from literature}
+
+\begin{figure}
+\includegraphics[height=4cm]{nsmb\lyxdot 2599-F4}\caption{Erkek, S., et al. (2013). Molecular determinants of nucleosome retention
+at CpG-rich sequences in mouse spermatozoa. Nature Structural \& Molecular
+Biology}
+\end{figure}
+
+
+
+\lyxframeend{}\lyxframe{Genomic interval summaries are widely used: Examples from literature}
+
+\begin{figure}
+\includegraphics[height=5cm]{nature10716-f2\lyxdot 2}\caption{Stadler, M., Murr, R., Burger, L., et al. (2011). DNA-binding factors
+shape the mouse methylome at distal regulatory regions. Nature }
+\end{figure}
+
+
+
+\lyxframeend{}
+
+
+\lyxframeend{}
+
+Utility and futility of average profiles
+
+Does this mean all of the windows (viewpoints) have a similar enrichment
+profile?
+
+<<utility,eval=TRUE,echo=FALSE,warning=FALSE,message=FALSE,fig.width=4,fig.height=4,out.width='.5\\linewidth'>>=
+library(genomation)
+set.seed(112)
+x=sapply(c(rep(3,7),5:7,c(7,8,8,9,9,9,9,8,8,7),7:5,rep(3,7)),function(x) rnorm(400,mean=x,sd=3) ) 
+y=sapply( rep(3,30),function(x) rnorm(800,mean=x,sd=3) ) 
+sm=rbind(x,y) 
+sm[sm<0]=0
+sm=new("ScoreMatrix",sm) 
+plotMeta(sm,line.col="red",main="average profile around anchor",xcoords=c(-100,100)) 
+@
+
+Utility and futility of average profiles
+
+Only 1/3 of windows have such enrichment. Be careful when you are
+interpreting the average profiles.
+
+<<utility2,eval=TRUE,echo=FALSE,warning=FALSE,message=FALSE,fig.width=3,fig.height=4,out.width='.40\\linewidth'>>=
+
+heatMatrix(sm,col=c("gray","brown","red" ),xcoords=c(-100,100) ) 
+@
+
+
+\lyxframeend{}\lyxframe{Genomic interval summaries are widely used: Examples from literature}
+
+\begin{figure}
+\includegraphics[height=6cm]{nature08514-f6\lyxdot 2}\caption{Lister, R., et al. (2009). Human DNA methylomes at base resolution
+show widespread epigenomic differences. Nature }
+\end{figure}
+
+
+
+\lyxframeend{}
+
+
+\lyxframeend{}\lyxframe{Genomic interval summaries are widely used: Examples from literature}
+
+\begin{figure}
+\includegraphics[height=6cm]{F4\lyxdot large}\caption{Feng, S. et al. (2010). Conservation and divergence of methylation
+patterning in plants and animals. PNAS}
+
+
+\end{figure}
+
+
+
+\lyxframeend{}\lyxframe{Issues to keep in mind when developing summary methods}
+\begin{itemize}
+\item Genomic data comes in many formats, we need a method that is able
+to \textbf{work with multiple flat file formats}
+\item We need a method that is not specialized on one type of data set such
+as read counts, it should also work on \textbf{other scoring schemes}(e.g.
+conservation scores) easily.
+\item Regions of interest are not always equi-width, you should be able
+to \textbf{normalize for length differences by binning}.
+\item \textbf{Multiple visualization options} and fast heatmap generation
+should be available
+\item \textbf{Clustering of regions} based on multiple summaries (e.g. binding
+for different TFs on the same set of regions) on the heatmap
+\item \textbf{Ease of use}, it should not take hours of coding to generate
+and visualize summaries.
+\end{itemize}
+
+\lyxframeend{}
+
+
+\lyxframeend{}\lyxframe{Overview of genomation features}
+
+\begin{figure}
+\includegraphics[height=5cm]{figure1}
+\end{figure}
+
+
+
+\lyxframeend{}
+
+
+\lyxframeend{}\section{Using genomation}
+
+installation of the package and the example data
+
+We can install the package and the data using \emph{install\_github()
+}function from the \emph{devtools} package.
+
+<<installation,eval=FALSE,tidy=FALSE>>=
+#install dependencies
+install.packages( c("data.table","plyr","reshape2","ggplot2",
+                    "gridBase","devtools")) 
+source("http://bioconductor.org/biocLite.R") 
+biocLite(c("GenomicRanges","rtracklayer","impute","Rsamtools"))
+
+# install the packages 
+library(devtools) 
+install_github("genomation", username = "al2na")
+
+# install the data package
+# needed for examples
+install_github("genomationData", username = "al2na")
+@
+
+Data import
+
+Various file formats can be used in genomation. You can read in annotation
+or your genomic intervals of interest.
+
+<<data_import,eval=TRUE,warning=FALSE,message=FALSE>>=
+
+library(genomation)
+tab.file1 <- system.file("extdata/tab1.bed", package = "genomation") 
+readGeneric(tab.file1)
+
+@
+
+Extraction of data over pre-defined genomic regions
+
+\textbf{ScoreMatrix()} and \textbf{ScoreMatrixBin()} are functions
+used to extract data over predefined windows. 
+\begin{itemize}
+\item ScoreMatrix is used when all of the windows have the same width (e.g.
+region around TSS)
+\item ScoreMatrixBin is designed for use with windows of unequal width (e.g.
+enrichment of methylation over exons).
+\end{itemize}
+<<extract,eval=TRUE,tidy=FALSE>>=
+data(cage) 
+data(promoters) 
+sm <- ScoreMatrix(target = cage, windows = promoters) 
+sm
+@
+
+Visualizing ScoreMatrix: summary of genomic invervals over pre-defined
+regions
+
+\textbf{plotMeta()},\textbf{heatMeta()}, \textbf{heatMatrix() }and\textbf{
+multiHeatMatrix()} are the visualization functions. 
+
+<<visualizeA,eval=TRUE,tidy=FALSE,out.width='.45\\linewidth'>>=
+oldmar <- par()$mar 
+par(oma = c(0, 0, 0, 0)) 
+heatMatrix(sm, xcoords = c(-1000, 1000)) 
+plotMeta(sm, xcoords = c(-1000, 1000),line.col="blue") 
+par(oma = oldmar)
+@
+
+Working with BAM files
+
+BAM files can also be used in ScoreMatrix() and ScoreMatrixBin() functions
+
+<<bam_example,eval=FALSE,tidy=FALSE>>=
+bam.file = system.file('tests/test.bam', package='genomation')  
+windows = GRanges(rep(c(1,2),each=2), 
+          IRanges(rep(c(1,2), times=2), width=5))  
+scores3 = ScoreMatrix(target=bam.file,windows=windows, type='bam')
+@
+
+Working with bigWig files
+
+\textbf{ScoreMatrix()} and \textbf{ScoreMatrixBin()} are functions
+can handle bigWig files. Here we use ENCODE DHS scores, downloaded
+from \url{http://goo.gl/fEVu0g}
+
+<<bigWig,eval=TRUE,fig.width=4,fig.height=4,out.width='.45\\linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+my.bed12.file=system.file("extdata/chr21.refseq.hg19.bed", 
+                            package = "genomation") 
+feats=readTranscriptFeatures(my.bed12.file,up.flank=500,down.flank=500)
+sm=ScoreMatrix(target="wgEncodeUwDnaseA549RawRep1.bw",
+     windows=feats$promoters,type='bigWig',strand.aware=TRUE)
+plotMeta(sm,xcoords=c(-500,500),main="DHS around TSS",line.col="blue")
+@
+
+Multiple profiles
+
+Multiple heatmap profiles can be plotted using \textbf{multiHeatMatrix()}
+which takes in a \textbf{ScoreMatrixList} object. Here we used CTCF
+, P300 , Suz12 ,Rad21, Znf143 BAM files from genomationData package. 
+
+<<multProf,eval=TRUE,size='tiny',fig.width=4,fig.height=4,out.width='.40\\linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+ctcf.peaks=readRDS("ctcf.peaks.rds")
+dataPath = system.file("extdata", package = "genomationData") 
+bam.files = list.files(dataPath, full= T,pattern = "bam$")[c(1:4,6)] 
+sml = ScoreMatrixList(bam.files, ctcf.peaks, bin.num = 50,type = "bam")
+names(sml)=c("CTCF","P300","Suz12","Rad21","Znf143")
+multiHeatMatrix(sml, xcoords = c(-500, 500),cex.axis=0.35,common.scale = T,
+                col = c("lightgray", "blue"),winsorize=c(0,95))
+
+@
+
+Multiple profiles
+
+\textbf{multiHeatMatrix()} can also apply K-means clustering. Extreme
+values are trimmed using with ``winsorize'' argument
+
+<<multProf2,eval=TRUE,size='tiny',fig.width=4,fig.height=4,out.width='.40\\linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+
+multiHeatMatrix(sml, xcoords = c(-500, 500),kmeans=TRUE,k=3,common.scale = T,
+                cex.axis=0.4,col = c("lightgray", "blue"),winsorize=c(0,95))
+
+@
+
+Multiple profiles
+
+Multiple average profiles can be visualized with \textbf{heatMeta().
+}Here, we also apply a scaling function to all the matrices. 
+
+<<multProf3,eval=TRUE,fig.width=8,fig.height=5,out.width='.7\\linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+# take log2 of all matrices
+sml2=scaleScoreMatrixList(sml,scalefun=function(x) log2(x+1))
+heatMeta(sml2,legend.name="average profiles",xcoords=c(-500, 500),
+         xlab="bp around peaks")
+
+@
+
+Multiple profiles
+
+Multiple average profiles can also be visualized with \textbf{plotMeta()}
+
+<<multProf4,eval=TRUE,fig.width=8,fig.height=5,out.width='.7\\linewidth',tidy=FALSE,message=FALSE,warning=FALSE>>=
+plotMeta(sml2,profile.names=names(sml2),
+         xcoords=c(-500, 500),
+         main="mult. profiles")
+
+@
+
+
+\lyxframeend{}\section{More information}
+
+
+\lyxframeend{}\lyxframe{Future work...}
+\begin{itemize}
+\item Explore overlap statistics between two genomic data sets: Does TF1
+binding site locations overlap with TF2 sites more than expected?
+\item This is previously explored with \href{http://genometricorr.sourceforge.net/}{GenometriCorr}
+package. These functionality can be included in the form of a dependency.
+\item Performance improvement on certain functions, faster is always better...
+\end{itemize}
+
+\lyxframeend{}\lyxframe{Further information}
+\begin{itemize}
+\item The genomation package is available at \url{http:/al2na.github.io/genomation}.
+You can find the link to the vignette on the webpage as well.
+\item Code that generated this presentation is available at \url{http://github.com/al2na/genomation_presentation}
+\item \textbf{Questions and bug reports}
+
+\begin{itemize}
+\item You can view/open issues in github \url{https://github.com/al2na/genomation/issues?state=open}
+\item You can ask questions by sending an e-mail to \textbf{\textcolor{blue}{genomation@googlegroups.com}}
+or using the web interface to \textsl{\structure{\textsl{\href{https://groups.google.com/forum/\#!forum/genomation}{google groups} }}}
+\end{itemize}
+\item Developed by Altuna Akal{\i}n and Vedran Franke
+\end{itemize}
+
+\lyxframeend{}
+
+Session Info
+
+<<session,eval=TRUE>>=
+sessionInfo()
+
+@
+\end{document}
